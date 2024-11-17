@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"ethereum-tx-parser/internal/rpcclient"
 	"log"
 )
 
@@ -20,13 +21,15 @@ type Parser interface {
 
 // EthereumParser struct implements the Parser interface
 type EthereumParser struct {
-	storage *MemoryStorage
+	rpcClient rpcclient.Client
+	storage   *MemoryStorage
 }
 
 // NewEthereumParser initializes a new EthereumParser
-func NewEthereumParser() *EthereumParser {
+func NewEthereumParser(c rpcclient.Client) *EthereumParser {
 	return &EthereumParser{
-		storage: NewMemoryStorage(),
+		rpcClient: c,
+		storage:   NewMemoryStorage(),
 	}
 }
 
@@ -42,10 +45,9 @@ func (p *EthereumParser) Subscribe(address string) bool {
 	if _, exists := p.storage.addresses[address]; !exists {
 		p.storage.addresses[address] = true
 		log.Printf("Address %s subscribed successfully", address)
-		return true
 	}
 	log.Printf("Address %s is already subscribed", address)
-	return false
+	return true
 }
 
 // GetTransactions returns a list of transactions for a given address

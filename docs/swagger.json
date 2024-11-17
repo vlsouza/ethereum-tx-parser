@@ -1,0 +1,120 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/currentBlock": {
+            "get": {
+                "description": "Get the latest parsed block",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get current block",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/subscribe": {
+            "get": {
+                "description": "Subscribe to notifications for incoming/outgoing transactions for a specific Ethereum address",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Subscribe given an address",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Ethereum address to subscribe to",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "address is required in header",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/transactions": {
+            "get": {
+                "description": "Retrieve inbound and outbound transactions for a subscribed Ethereum address",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get transactions given an address",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Ethereum address to retrieve transactions for",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/parser.Transaction"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "address is required in header",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "parser.Transaction": {
+            "type": "object",
+            "properties": {
+                "from": {
+                    "type": "string"
+                },
+                "to": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

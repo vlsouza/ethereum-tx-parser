@@ -1,0 +1,79 @@
+definitions:
+  parser.Transaction:
+    properties:
+      from:
+        type: string
+      to:
+        type: string
+      value:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /currentBlock:
+    get:
+      description: Get the latest parsed block
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+      summary: Get current block
+  /subscribe:
+    get:
+      description: Subscribe to notifications for incoming/outgoing transactions for
+        a specific Ethereum address
+      parameters:
+      - description: Ethereum address to subscribe to
+        in: query
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: address is required in header
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Subscribe given an address
+  /transactions:
+    get:
+      description: Retrieve inbound and outbound transactions for a subscribed Ethereum
+        address
+      parameters:
+      - description: Ethereum address to retrieve transactions for
+        in: query
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/parser.Transaction'
+            type: array
+        "400":
+          description: address is required in header
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get transactions given an address
+swagger: "2.0"

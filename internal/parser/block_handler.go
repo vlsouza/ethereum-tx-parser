@@ -8,7 +8,7 @@ import (
 
 // UpdateCurrentBlock fetches the latest block number and updates storage
 func (p *EthereumParser) UpdateCurrentBlock() error {
-	result, err := CallRPC("eth_blockNumber", []interface{}{})
+	result, err := p.rpcClient.Call("eth_blockNumber", []interface{}{})
 	if err != nil {
 		return err
 	}

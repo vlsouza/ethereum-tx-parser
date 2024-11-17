@@ -1,10 +1,13 @@
 package api
 
 import (
-	"encoding/json"
-	"ethereum-tx-parser/internal/parser"
 	"log"
 	"net/http"
+
+	"encoding/json"
+	_ "ethereum-tx-parser/docs"
+	"ethereum-tx-parser/internal/parser"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type Server struct {
@@ -22,6 +25,9 @@ func (s *Server) StartHTTPServer(port string) {
 	http.HandleFunc("/subscribe", s.subscribeHandler)
 	http.HandleFunc("/transactions", s.getTransactionsHandler)
 
+	// Add the Swagger UI handler
+	http.Handle("/swagger/", httpSwagger.WrapHandler)
+
 	log.Printf("Server started at port %s\n", port)
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
@@ -29,11 +35,23 @@ func (s *Server) StartHTTPServer(port string) {
 	}
 }
 
+// @Summary Get current block
+// @Description Get the latest parsed block
+// @Produce json
+// @Success 200 {object} map[string]int
+// @Router /currentBlock [get]
 func (s *Server) getCurrentBlockHandler(w http.ResponseWriter, r *http.Request) {
 	block := s.parser.GetCurrentBlock()
 	json.NewEncoder(w).Encode(map[string]int{"currentBlock": block})
 }
 
+// @Summary Subscribe given an address
+// @Description Subscribe to notifications for incoming/outgoing transactions for a specific Ethereum address
+// @Produce json
+// @Param address query string true "Ethereum address to subscribe to"
+// @Success 200 {object} map[string]bool
+// @Failure 400 {object} map[string]string "address is required in header"
+// @Router /subscribe [get]
 func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
 	address := r.URL.Query().Get("address")
 	if address == "" {
@@ -44,6 +62,13 @@ func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"subscribed": success})
 }
 
+// @Summary Get transactions given an address
+// @Description Retrieve inbound and outbound transactions for a subscribed Ethereum address
+// @Produce json
+// @Param address query string true "Ethereum address to retrieve transactions for"
+// @Success 200 {array} parser.Transaction
+// @Failure 400 {object} map[string]string "address is required in header"
+// @Router /transactions [get]
 func (s *Server) getTransactionsHandler(w http.ResponseWriter, r *http.Request) {
 	address := r.URL.Query().Get("address")
 	if address == "" {
