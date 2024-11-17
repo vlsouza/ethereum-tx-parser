@@ -44,11 +44,13 @@ paths:
               type: boolean
             type: object
         "400":
-          description: address is required in header
+          description: address is required
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            type: string
+        "409":
+          description: already subscribed
+          schema:
+            type: string
       summary: Subscribe given an address
   /transactions:
     get:
@@ -70,10 +72,8 @@ paths:
               $ref: '#/definitions/parser.Transaction'
             type: array
         "400":
-          description: address is required in header
+          description: address is required
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            type: string
       summary: Get transactions given an address
 swagger: "2.0"

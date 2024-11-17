@@ -45,9 +45,10 @@ func (p *EthereumParser) Subscribe(address string) bool {
 	if _, exists := p.storage.addresses[address]; !exists {
 		p.storage.addresses[address] = true
 		log.Printf("Address %s subscribed successfully", address)
+		return true
 	}
 	log.Printf("Address %s is already subscribed", address)
-	return true
+	return false
 }
 
 // GetTransactions returns a list of transactions for a given address

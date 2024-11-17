@@ -50,7 +50,8 @@ func (s *Server) getCurrentBlockHandler(w http.ResponseWriter, r *http.Request) 
 // @Produce json
 // @Param address query string true "Ethereum address to subscribe to"
 // @Success 200 {object} map[string]bool
-// @Failure 400 {object} map[string]string "address is required in header"
+// @Failure 400 {string} string "address is required"
+// @Failure 409 {string} string "already subscribed"
 // @Router /subscribe [get]
 func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
 	address := r.URL.Query().Get("address")
@@ -59,6 +60,9 @@ func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	success := s.parser.Subscribe(address)
+	if !success {
+		http.Error(w, "already subscribed", http.StatusConflict)
+	}
 	json.NewEncoder(w).Encode(map[string]bool{"subscribed": success})
 }
 
@@ -67,7 +71,7 @@ func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param address query string true "Ethereum address to retrieve transactions for"
 // @Success 200 {array} parser.Transaction
-// @Failure 400 {object} map[string]string "address is required in header"
+// @Failure 400 {string} string "address is required"
 // @Router /transactions [get]
 func (s *Server) getTransactionsHandler(w http.ResponseWriter, r *http.Request) {
 	address := r.URL.Query().Get("address")

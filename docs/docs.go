@@ -62,12 +62,15 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "address is required in header",
+                        "description": "address is required",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "type": "string"
+                        }
+                    },
+                    "409": {
+                        "description": "already subscribed",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -100,12 +103,9 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "address is required in header",
+                        "description": "address is required",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "type": "string"
                         }
                     }
                 }
