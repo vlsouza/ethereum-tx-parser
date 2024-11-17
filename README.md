@@ -82,12 +82,12 @@ This is a simple Ethereum blockchain parser implemented in Go. The parser allows
 
 2. **Subscribe to an Address**
    ```bash
-   curl -X GET http://localhost:8080/subscribe -H "Address: 0xYourEthereumAddress"
+   curl -X GET "http://localhost:8080/subscribe?address=0xYourEthereumAddress"
    ```
 
 3. **Get Transactions for an Address**
    ```bash
-   curl -X GET http://localhost:8080/transactions -H "Address: 0xYourEthereumAddress"
+   curl -X GET "http://localhost:8080/transactions?address=0xYourEthereumAddress"
    ```
 
 ## Swagger Documentation

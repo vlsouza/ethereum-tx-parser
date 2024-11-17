@@ -18,7 +18,8 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: A map where the key is 'currentBlock' and the value is the
+            block number
           schema:
             additionalProperties:
               type: integer
@@ -38,17 +39,18 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: A map where the key is 'subscribed' and the value is a boolean
+            indicating success
           schema:
             additionalProperties:
               type: boolean
             type: object
         "400":
-          description: address is required
+          description: Address is required
           schema:
             type: string
         "409":
-          description: already subscribed
+          description: Already subscribed
           schema:
             type: string
       summary: Subscribe given an address
@@ -72,7 +74,7 @@ paths:
               $ref: '#/definitions/parser.Transaction'
             type: array
         "400":
-          description: address is required
+          description: Address is required
           schema:
             type: string
       summary: Get transactions given an address

@@ -38,7 +38,7 @@ func (s *Server) StartHTTPServer(port string) {
 // @Summary Get current block
 // @Description Get the latest parsed block
 // @Produce json
-// @Success 200 {object} map[string]int
+// @Success 200 {object} map[string]int "A map where the key is 'currentBlock' and the value is the block number"
 // @Router /currentBlock [get]
 func (s *Server) getCurrentBlockHandler(w http.ResponseWriter, r *http.Request) {
 	block := s.parser.GetCurrentBlock()
@@ -49,9 +49,9 @@ func (s *Server) getCurrentBlockHandler(w http.ResponseWriter, r *http.Request) 
 // @Description Subscribe to notifications for incoming/outgoing transactions for a specific Ethereum address
 // @Produce json
 // @Param address query string true "Ethereum address to subscribe to"
-// @Success 200 {object} map[string]bool
-// @Failure 400 {string} string "address is required"
-// @Failure 409 {string} string "already subscribed"
+// @Success 200 {object} map[string]bool "A map where the key is 'subscribed' and the value is a boolean indicating success"
+// @Failure 400 {string} string "Address is required"
+// @Failure 409 {string} string "Already subscribed"
 // @Router /subscribe [get]
 func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
 	address := r.URL.Query().Get("address")
@@ -71,7 +71,7 @@ func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param address query string true "Ethereum address to retrieve transactions for"
 // @Success 200 {array} parser.Transaction
-// @Failure 400 {string} string "address is required"
+// @Failure 400 {string} string "Address is required"
 // @Router /transactions [get]
 func (s *Server) getTransactionsHandler(w http.ResponseWriter, r *http.Request) {
 	address := r.URL.Query().Get("address")

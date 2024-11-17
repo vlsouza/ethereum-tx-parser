@@ -24,7 +24,7 @@ const docTemplate = `{
                 "summary": "Get current block",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "A map where the key is 'currentBlock' and the value is the block number",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -53,7 +53,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "A map where the key is 'subscribed' and the value is a boolean indicating success",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -62,13 +62,13 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "address is required",
+                        "description": "Address is required",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "409": {
-                        "description": "already subscribed",
+                        "description": "Already subscribed",
                         "schema": {
                             "type": "string"
                         }
@@ -103,7 +103,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "address is required",
+                        "description": "Address is required",
                         "schema": {
                             "type": "string"
                         }
