@@ -1,0 +1,13 @@
+# Dependency cache
+vendor/
+
+# Package directory
+pkg/
+
+# Editor temporary files
+*.swp
+*~
+.#*
+
+# GoLand specific items
+.idea/
