@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 
@@ -66,7 +67,7 @@ func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "already subscribed", http.StatusConflict)
 		return
 	}
-	json.NewEncoder(w).Encode(map[string]bool{"subscribed": success})
+	json.NewEncoder(w).Encode(map[string]bool{"subscribed": success}) //can return more info if needed
 }
 
 // @Summary Get transactions given an address
@@ -89,9 +90,9 @@ func (s *Server) getTransactionsHandler(w http.ResponseWriter, r *http.Request) 
 // Helper function to get and validate the address from the request
 func getAddressFromRequest(r *http.Request) (string, error) {
 	vars := mux.Vars(r)
-	address := vars["address_id"]
+	address := vars["address"]
 	if address == "" {
-		return "", http.ErrMissingFile // You can use a custom error or create your own
+		return "", errors.New("address is required")
 	}
 	return address, nil
 }
