@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/currentBlock": {
+        "/block/current": {
             "get": {
                 "description": "Get the latest parsed block",
                 "produces": [

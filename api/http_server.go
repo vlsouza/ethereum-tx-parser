@@ -23,7 +23,7 @@ func NewServer(p *parser.EthereumParser) *Server {
 // StartHTTPServer starts the HTTP server on a specified port
 func (s *Server) StartHTTPServer(port string) {
 	router := mux.NewRouter()
-	router.HandleFunc("/currentBlock", s.getCurrentBlockHandler).Methods("GET")
+	router.HandleFunc("/block/current", s.getCurrentBlockHandler).Methods("GET")
 	router.HandleFunc("/subscribe/{address}", s.subscribeHandler).Methods("POST")
 	router.HandleFunc("/transactions/{address}", s.getTransactionsHandler).Methods("GET")
 
@@ -41,7 +41,7 @@ func (s *Server) StartHTTPServer(port string) {
 // @Description Get the latest parsed block
 // @Produce json
 // @Success 200 {object} map[string]int "A map where the key is 'currentBlock' and the value is the block number"
-// @Router /currentBlock [get]
+// @Router /block/current [get]
 func (s *Server) getCurrentBlockHandler(w http.ResponseWriter, r *http.Request) {
 	block := s.parser.GetCurrentBlock()
 	json.NewEncoder(w).Encode(map[string]int{"currentBlock": block})
@@ -89,7 +89,7 @@ func (s *Server) getTransactionsHandler(w http.ResponseWriter, r *http.Request) 
 // Helper function to get and validate the address from the request
 func getAddressFromRequest(r *http.Request) (string, error) {
 	vars := mux.Vars(r)
-	address := vars["address"]
+	address := vars["address_id"]
 	if address == "" {
 		return "", http.ErrMissingFile // You can use a custom error or create your own
 	}

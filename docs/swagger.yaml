@@ -11,7 +11,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /currentBlock:
+  /block/current:
     get:
       description: Get the latest parsed block
       produces:

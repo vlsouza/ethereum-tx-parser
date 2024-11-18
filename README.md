@@ -42,7 +42,7 @@ This is a simple Ethereum blockchain parser implemented in Go. The parser allows
    ```bash
    make build
    ```
-   - **Description**: Tidies up the dependencies, vendors them, and builds the project, generating an executable named `tx-parser`.
+   - **Description**: Builds the project, generating an executable named `tx-parser`.
 
 ### 2. Run All Tests
    ```bash
@@ -69,24 +69,24 @@ This is a simple Ethereum blockchain parser implemented in Go. The parser allows
    - **Description**: Installs the necessary tools, such as the `swag` CLI, for generating documentation.
 
 ## API Endpoints
-- **GET** `/currentBlock`: Get the latest parsed block.
-- **GET** `/subscribe`: Subscribe to an Ethereum address using the `Address` header.
-- **GET** `/transactions`: Get transactions for an Ethereum address using the `Address` header.
+- **GET** `/block/current`: Get the latest parsed block.
+- **POST** `/subscribe/{address}`: Subscribe to an Ethereum address using the `address` path parameter.
+- **GET** `/transactions/{address}`: Get transactions for an Ethereum address using the `address` path parameter.
 
 ### Example Requests
 1. **Get Current Block**
    ```bash
-   curl -X GET "http://localhost:8080/currentBlock"
+   curl -X GET "http://localhost:8080/block/current"
    ```
 
 2. **Subscribe to an Address**
    ```bash
-   curl -X GET "http://localhost:8080/subscribe?address=0xYourEthereumAddress"
+   curl -X POST "http://localhost:8080/subscribe/0xYourEthereumAddress"
    ```
 
 3. **Get Transactions for an Address**
    ```bash
-   curl -X GET "http://localhost:8080/transactions?address=0xYourEthereumAddress"
+   curl -X GET "http://localhost:8080/transactions/0xYourEthereumAddress"
    ```
 
 ## Swagger Documentation
