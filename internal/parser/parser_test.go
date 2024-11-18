@@ -5,7 +5,7 @@ import (
 )
 
 func TestSubscribe(t *testing.T) {
-	ethParser := NewEthereumParser(nil /* rpcclient client */)
+	ethParser := NewEthereumParser(nil /* rpc client */)
 
 	address := "0x12345"
 	success := ethParser.Subscribe(address)
@@ -21,7 +21,7 @@ func TestSubscribe(t *testing.T) {
 }
 
 func TestGetCurrentBlock(t *testing.T) {
-	ethParser := NewEthereumParser(nil /* rpcclient client */)
+	ethParser := NewEthereumParser(nil /* rpc client */)
 
 	block := ethParser.GetCurrentBlock()
 	if block != 0 {

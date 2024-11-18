@@ -1,8 +1,9 @@
 package parser
 
 import (
-	"ethereum-tx-parser/internal/rpcclient"
 	"log"
+
+	"ethereum-tx-parser/internal/rpcclient"
 )
 
 // Transaction struct represents a simple transaction model

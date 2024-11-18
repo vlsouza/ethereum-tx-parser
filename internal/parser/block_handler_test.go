@@ -1,9 +1,10 @@
 package parser
 
 import (
-	"ethereum-tx-parser/internal/rpcclient"
 	"strings"
 	"testing"
+	
+	"ethereum-tx-parser/internal/rpcclient"
 )
 
 func TestUpdateCurrentBlock_Success(t *testing.T) {
