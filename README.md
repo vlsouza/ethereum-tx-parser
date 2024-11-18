@@ -32,9 +32,9 @@ This is a simple Ethereum blockchain parser implemented in Go. The parser allows
    go mod vendor
    ```
 
-3. Install Swagger CLI tool:
+3. Install tools:
    ```bash
-   go install github.com/swaggo/swag/cmd/swag@latest
+   make tools
    ```
 
 ## Usage
@@ -77,7 +77,7 @@ This is a simple Ethereum blockchain parser implemented in Go. The parser allows
 ### Example Requests
 1. **Get Current Block**
    ```bash
-   curl -X GET http://localhost:8080/currentBlock
+   curl -X GET "http://localhost:8080/currentBlock"
    ```
 
 2. **Subscribe to an Address**
