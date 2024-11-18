@@ -2,7 +2,7 @@
 BINARY_NAME=tx-parser
 
 # Directory containing the internal project files
-INTERNAL_DIR=./internal
+INTERNAL_DIR=./
 
 # Command to generate Swagger documentation (replace with your specific Swagger command)
 SWAGGER_CMD=swag init
