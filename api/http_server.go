@@ -1,12 +1,13 @@
 package api
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 
-	"encoding/json"
 	_ "ethereum-tx-parser/docs"
 	"ethereum-tx-parser/internal/parser"
+	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
@@ -21,15 +22,16 @@ func NewServer(p *parser.EthereumParser) *Server {
 
 // StartHTTPServer starts the HTTP server on a specified port
 func (s *Server) StartHTTPServer(port string) {
-	http.HandleFunc("/currentBlock", s.getCurrentBlockHandler)
-	http.HandleFunc("/subscribe", s.subscribeHandler)
-	http.HandleFunc("/transactions", s.getTransactionsHandler)
+	router := mux.NewRouter()
+	router.HandleFunc("/currentBlock", s.getCurrentBlockHandler).Methods("GET")
+	router.HandleFunc("/subscribe/{address}", s.subscribeHandler).Methods("POST")
+	router.HandleFunc("/transactions/{address}", s.getTransactionsHandler).Methods("GET")
 
 	// Add the Swagger UI handler
-	http.Handle("/swagger/", httpSwagger.WrapHandler)
+	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	log.Printf("Server started at port %s\n", port)
-	err := http.ListenAndServe(":"+port, nil)
+	err := http.ListenAndServe(":"+port, router)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
 	}
@@ -48,20 +50,21 @@ func (s *Server) getCurrentBlockHandler(w http.ResponseWriter, r *http.Request) 
 // @Summary Subscribe given an address
 // @Description Subscribe to notifications for incoming/outgoing transactions for a specific Ethereum address
 // @Produce json
-// @Param address query string true "Ethereum address to subscribe to"
+// @Param address path string true "Ethereum address to subscribe to"
 // @Success 200 {object} map[string]bool "A map where the key is 'subscribed' and the value is a boolean indicating success"
 // @Failure 400 {string} string "Address is required"
 // @Failure 409 {string} string "Already subscribed"
-// @Router /subscribe [get]
+// @Router /subscribe/{address} [post]
 func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
-	address := r.URL.Query().Get("address")
-	if address == "" {
-		http.Error(w, "address is required", http.StatusBadRequest)
+	address, err := getAddressFromRequest(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	success := s.parser.Subscribe(address)
 	if !success {
 		http.Error(w, "already subscribed", http.StatusConflict)
+		return
 	}
 	json.NewEncoder(w).Encode(map[string]bool{"subscribed": success})
 }
@@ -69,16 +72,26 @@ func (s *Server) subscribeHandler(w http.ResponseWriter, r *http.Request) {
 // @Summary Get transactions given an address
 // @Description Retrieve inbound and outbound transactions for a subscribed Ethereum address
 // @Produce json
-// @Param address query string true "Ethereum address to retrieve transactions for"
+// @Param address path string true "Ethereum address to retrieve transactions for"
 // @Success 200 {array} parser.Transaction
 // @Failure 400 {string} string "Address is required"
-// @Router /transactions [get]
+// @Router /transactions/{address} [get]
 func (s *Server) getTransactionsHandler(w http.ResponseWriter, r *http.Request) {
-	address := r.URL.Query().Get("address")
-	if address == "" {
-		http.Error(w, "address is required", http.StatusBadRequest)
+	address, err := getAddressFromRequest(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	transactions := s.parser.GetTransactions(address)
 	json.NewEncoder(w).Encode(transactions)
+}
+
+// Helper function to get and validate the address from the request
+func getAddressFromRequest(r *http.Request) (string, error) {
+	vars := mux.Vars(r)
+	address := vars["address"]
+	if address == "" {
+		return "", http.ErrMissingFile // You can use a custom error or create your own
+	}
+	return address, nil
 }

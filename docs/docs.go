@@ -35,8 +35,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/subscribe": {
-            "get": {
+        "/subscribe/{address}": {
+            "post": {
                 "description": "Subscribe to notifications for incoming/outgoing transactions for a specific Ethereum address",
                 "produces": [
                     "application/json"
@@ -47,7 +47,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Ethereum address to subscribe to",
                         "name": "address",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -76,7 +76,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/transactions": {
+        "/transactions/{address}": {
             "get": {
                 "description": "Retrieve inbound and outbound transactions for a subscribed Ethereum address",
                 "produces": [
@@ -88,7 +88,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Ethereum address to retrieve transactions for",
                         "name": "address",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
