@@ -7,7 +7,7 @@ This is a simple Ethereum blockchain parser implemented in Go. The parser allows
 - **Get Current Block**: Retrieve the latest parsed block.
 - **Subscribe to an Address**: Subscribe to notifications for incoming and outgoing transactions for a specific Ethereum address.
 - **Get Transactions**: Retrieve all inbound and outbound transactions for a subscribed address.
-- **Swagger Documentation**: Easily view and interact with the API documentation via Swagger UI.
+- **Swagger Documentation**: View and interact with the API documentation via Swagger UI.
 
 ## Project Structure
 - `/internal/parser`: Contains the core parsing logic and in-memory storage.
