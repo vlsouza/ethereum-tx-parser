@@ -17,7 +17,6 @@ This is a simple Ethereum blockchain parser implemented in Go. The parser allows
 
 ## Prerequisites
 - Go (latest version recommended)
-- `swag` for generating Swagger documentation
 
 ## Installation
 1. Clone the repository:
